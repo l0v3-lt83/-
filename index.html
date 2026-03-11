@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Портфолио | Минимализм</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Темный минималистичный хедер */
+        .resume-section {
+            margin-bottom: 80px;
+            border-bottom: 1px solid #2a2a2a;
+            padding-bottom: 40px;
+        }
+
+        .resume-header {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #1a1a1a;
+            border: 2px solid #3a3a3a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: #888;
+            transition: border-color 0.2s ease;
+        }
+
+        .avatar:hover {
+            border-color: #666;
+        }
+
+        .name-title h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .name-title .subtitle {
+            font-size: 1.1rem;
+            color: #888;
+            font-weight: 300;
+        }
+
+        .bio {
+            max-width: 700px;
+            margin: 30px 0;
+            color: #aaa;
+            font-size: 1rem;
+            font-weight: 300;
+        }
+
+        /* Минималистичные детали */
+        .details-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #aaa;
+            font-size: 0.95rem;
+            font-weight: 300;
+        }
+
+        .detail-item span:first-child {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Скиллы в минималистичном стиле */
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 30px 0;
+        }
+
+        .skill-tag {
+            padding: 4px 12px;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            color: #aaa;
+            font-size: 0.85rem;
+            font-weight: 300;
+            transition: all 0.2s ease;
+        }
+
+        .skill-tag:hover {
+            border-color: #666;
+            color: #fff;
+        }
+
+        /* Галерея - чистый минимализм */
+        .gallery-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .gallery-header h2 {
+            font-weight: 300;
+            font-size: 1.5rem;
+            color: #fff;
+            letter-spacing: -0.5px;
+        }
+
+        .image-counter {
+            color: #888;
+            font-size: 0.9rem;
+            font-weight: 300;
+            padding: 4px 12px;
+            border: 1px solid #2a2a2a;
+        }
+
+        /* Сетка галереи */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2px;
+            background: #0a0a0a;
+        }
+
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 1;
+            background: #1a1a1a;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+            display: block;
+        }
+
+        .gallery-item:hover img {
+            opacity: 1;
+        }
+
+        /* Минималистичный overlay - только название при наведении */
+        .gallery-item .image-title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.9);
+            color: #fff;
+            padding: 12px;
+            font-size: 0.9rem;
+            font-weight: 300;
+            transform: translateY(100%);
+            transition: transform 0.2s ease;
+            backdrop-filter: blur(5px);
+            border-top: 1px solid #2a2a2a;
+        }
+
+        .gallery-item:hover .image-title {
+            transform: translateY(0);
+        }
+
+        /* Модальное окно - темное и минималистичное */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: #666;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.2s;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: #fff;
+        }
+
+        .modal-caption {
+            position: absolute;
+            bottom: -30px;
+            left: 0;
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 300;
+        }
+
+        /* Сообщения о загрузке */
+        .loading, .no-images {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 80px 20px;
+            color: #888;
+            font-weight: 300;
+            border: 1px solid #2a2a2a;
+            background: #1a1a1a;
+        }
+
+        .loading {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Разделитель */
+        .divider {
+            width: 50px;
+            height: 1px;
+            background: #2a2a2a;
+            margin: 20px 0;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .resume-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+            .avatar {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
+            }
+
+            .name-title h1 {
+                font-size: 2rem;
+            }
+
+            .gallery-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 2px;
+            }
+
+            .modal-close {
+                top: -30px;
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Для больших экранов */
+        @media (min-width: 1800px) {
+            .gallery-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        /* Убираем все лишние декоративные элементы */
+        a, button {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Стили для скролла */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #3a3a3a;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4a4a4a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Минималистичное резюме -->
+        <div class="resume-section">
+            <div class="resume-header">
+                <div class="avatar">
+                    <span>SM</span>
+                </div>
+                <div class="name-title">
+                    <h1>Sophia Misiuchenko</h1>
+                    <div class="subtitle">game designer</div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="bio">
+                I am an artist and creative user with a strong interest in creating visual content and game maps. I studied at the School of Arts for 5 years, specializing in visual arts. During this time, I gained a solid foundation in academic drawing, composition, and color theory. In addition to my formal education, I have been self-learning digital art and working on a graphic tablet for about 6 years. I have a good understanding of color, composition, and I create clean and aesthetically pleasing artwork. I also have a strong imagination and creative thinking, which helps me come up with interesting ideas and build beautiful maps. I pay attention to details and always try to make my work neat, clean, and visually appealing. I learn new things quickly and can easily adapt to new tools or mechanics required for work. I would be happy to apply my creativity, design skills, and map-building abilities to the Pony Town project.
+            </div>
+
+            <div class="details-grid">
+                <div class="detail-item">
+                    <span>📍</span>
+                    <span>Russia</span>
+                </div>
+                <div class="detail-item">
+                    <span>📧</span>
+                    <span>marvx.mk@gmail.com</span>
+                </div>
+                <div class="detail-item">
+                    <span>🕒</span>
+                    <span>available for projects</span>
+                </div>
+            </div>
+
+            <div class="skills">
+                <span class="skill-tag">graphics</span>
+                <span class="skill-tag">illustration</span>
+                <span class="skill-tag">sketching</span>
+                <span class="skill-tag">pixel_art</span>
+            </div>
+        </div>
+
+        <!-- Галерея -->
+        <div class="gallery-header">
+            <h2>Gallery</h2>
+            <div class="image-counter" id="imageCounter">—</div>
+        </div>
+        
+        <div class="gallery-grid" id="galleryGrid">
+            <div class="loading">scanning /image ...</div>
+        </div>
+    </div>
+
+    <!-- Модальное окно -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">×</span>
+            <img id="modalImage" src="" alt="">
+            <div class="modal-caption" id="modalCaption"></div>
+        </div>
+    </div>
+
+    <script>
+        // Сканирование папки /image
+        async function scanImageFolder() {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    // Расширения изображений
+                    const extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'];
+                    
+                    // Проверяем сохраненные изображения
+                    const saved = localStorage.getItem('minimal_portfolio');
+                    
+                    if (saved) {
+                        resolve(JSON.parse(saved));
+                    } else {
+                        // Генерируем минималистичные тестовые изображения
+                        const images = [];
+                        
+                        // Создаем 16 изображений в серых тонах для минимализма
+                        for (let i = 1; i <= 16; i++) {
+                            // Используем черно-белые изображения для атмосферы
+                            const grayscale = i % 2 === 0 ? 'grayscale' : '';
+                            images.push({
+                                name: `work-${i}.jpg`,
+                                path: `image/work-${i}.jpg`,
+                                // Используем picsum с ID для консистентности
+                                thumbnail: `https://picsum.photos/id/${i + 20}/400/400`,
+                                fullsize: `https://picsum.photos/id/${i + 20}/1200/1200`,
+                                title: `project ${i}`,
+                                id: i
+                            });
+                        }
+                        
+                        localStorage.setItem('minimal_portfolio', JSON.stringify(images));
+                        resolve(images);
+                    }
+                }, 1000);
+            });
+        }
+
+        // Загрузка галереи
+        async function loadGallery() {
+            const grid = document.getElementById('galleryGrid');
+            const counter = document.getElementById('imageCounter');
+            
+            try {
+                const images = await scanImageFolder();
+                
+                counter.textContent = `${images.length} работ`;
+                
+                if (images.length === 0) {
+                    grid.innerHTML = '<div class="no-images">folder /image is empty</div>';
+                    return;
+                }
+                
+                grid.innerHTML = '';
+                
+                images.forEach((img, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'gallery-item';
+                    item.onclick = () => openModal(img.fullsize, img.title);
+                    
+                    const title = img.name || `работа ${index + 1}`;
+                    
+                    item.innerHTML = `
+                        <img src="${img.thumbnail}" alt="${title}" loading="lazy">
+                        <div class="image-title">${title}</div>
+                    `;
+                    
+                    grid.appendChild(item);
+                });
+                
+            } catch (error) {
+                console.error('Error:', error);
+                grid.innerHTML = '<div class="no-images">ошибка загрузки</div>';
+                counter.textContent = '—';
+            }
+        }
+
+        // Модальное окно
+        function openModal(src, title) {
+            const modal = document.getElementById('imageModal');
+            const img = document.getElementById('modalImage');
+            const caption = document.getElementById('modalCaption');
+            
+            img.src = src;
+            caption.textContent = title || 'без названия';
+            modal.classList.add('active');
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeModal();
+            });
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('active');
+        }
+
+        // Закрытие по клику на фон
+        document.getElementById('imageModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // Запуск
+        document.addEventListener('DOMContentLoaded', loadGallery);
+    </script>
+</body>
+</html>
