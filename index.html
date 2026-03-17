@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Портфолио | Минимализм</title>
+    <title>Portfolio | Sophia Misiuchenko</title>
     <style>
         * {
             margin: 0;
@@ -27,7 +27,7 @@
 
         /* Темный минималистичный хедер */
         .resume-section {
-            margin-bottom: 80px;
+            margin-bottom: 60px;
             border-bottom: 1px solid #2a2a2a;
             padding-bottom: 40px;
         }
@@ -72,11 +72,12 @@
         }
 
         .bio {
-            max-width: 700px;
+            max-width: 800px;
             margin: 30px 0;
             color: #aaa;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 300;
+            line-height: 1.8;
         }
 
         /* Минималистичные детали */
@@ -124,7 +125,45 @@
             color: #fff;
         }
 
-        /* Галерея - чистый минимализм */
+        /* Навигация по разделам */
+        .section-nav {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #2a2a2a;
+            padding-bottom: 15px;
+        }
+
+        .section-link {
+            color: #888;
+            font-weight: 300;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .section-link:hover {
+            color: #fff;
+        }
+
+        .section-link.active {
+            color: #fff;
+            border-bottom: 1px solid #fff;
+            padding-bottom: 15px;
+            margin-bottom: -15px;
+        }
+
+        /* Галерея секции */
+        .gallery-section {
+            display: none;
+            margin-bottom: 40px;
+        }
+
+        .gallery-section.active {
+            display: block;
+        }
+
         .gallery-header {
             display: flex;
             justify-content: space-between;
@@ -150,7 +189,7 @@
         /* Сетка галереи */
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 2px;
             background: #0a0a0a;
         }
@@ -176,7 +215,7 @@
             opacity: 1;
         }
 
-        /* Минималистичный overlay - только название при наведении */
+        /* Минималистичный overlay */
         .gallery-item .image-title {
             position: absolute;
             bottom: 0;
@@ -197,7 +236,7 @@
             transform: translateY(0);
         }
 
-        /* Модальное окно - темное и минималистичное */
+        /* Модальное окно */
         .modal {
             display: none;
             position: fixed;
@@ -302,6 +341,17 @@
                 font-size: 2rem;
             }
 
+            .section-nav {
+                gap: 20px;
+                overflow-x: auto;
+                white-space: nowrap;
+                padding-bottom: 10px;
+            }
+
+            .section-link {
+                font-size: 1rem;
+            }
+
             .gallery-header {
                 flex-direction: column;
                 align-items: flex-start;
@@ -309,7 +359,7 @@
             }
 
             .gallery-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
                 gap: 2px;
             }
 
@@ -324,12 +374,6 @@
             .gallery-grid {
                 grid-template-columns: repeat(5, 1fr);
             }
-        }
-
-        /* Убираем все лишние декоративные элементы */
-        a, button {
-            text-decoration: none;
-            color: inherit;
         }
 
         /* Стили для скролла */
@@ -361,14 +405,23 @@
                 </div>
                 <div class="name-title">
                     <h1>Sophia Misiuchenko</h1>
-                    <div class="subtitle">game designer</div>
+                    <div class="subtitle">game designer / 2D artist</div>
                 </div>
             </div>
 
             <div class="divider"></div>
 
             <div class="bio">
-                I am an artist and creative user with a strong interest in creating visual content and game maps. I studied at the School of Arts for 5 years, specializing in visual arts. During this time, I gained a solid foundation in academic drawing, composition, and color theory. In addition to my formal education, I have been self-learning digital art and working on a graphic tablet for about 6 years. I have a good understanding of color, composition, and I create clean and aesthetically pleasing artwork. I also have a strong imagination and creative thinking, which helps me come up with interesting ideas and build beautiful maps. I pay attention to details and always try to make my work neat, clean, and visually appealing. I learn new things quickly and can easily adapt to new tools or mechanics required for work. I would be happy to apply my creativity, design skills, and map-building abilities to the Pony Town project.
+                I am an artist and creative user with a strong interest in creating visual content and game maps. 
+                I studied at the School of Arts for 5 years, specializing in visual arts. During this time, 
+                I gained a solid foundation in academic drawing, composition, and color theory. In addition to 
+                my formal education, I have been self-learning digital art and working on a graphic tablet for 
+                about 6 years. I have a good understanding of color, composition, and I create clean and aesthetically 
+                pleasing artwork. I also have a strong imagination and creative thinking, which helps me come up with 
+                interesting ideas and build beautiful maps. I pay attention to details and always try to make my work 
+                neat, clean, and visually appealing. I learn new things quickly and can easily adapt to new tools or 
+                mechanics required for work. I would be happy to apply my creativity, design skills, and map-building 
+                abilities to the Pony Town project.
             </div>
 
             <div class="details-grid">
@@ -390,18 +443,51 @@
                 <span class="skill-tag">graphics</span>
                 <span class="skill-tag">illustration</span>
                 <span class="skill-tag">sketching</span>
-                <span class="skill-tag">pixel_art</span>
+                <span class="skill-tag">pixel art</span>
+                <span class="skill-tag">game design</span>
+                <span class="skill-tag">map design</span>
+                <span class="skill-tag">character design</span>
             </div>
         </div>
 
-        <!-- Галерея -->
-        <div class="gallery-header">
-            <h2>Gallery</h2>
-            <div class="image-counter" id="imageCounter">—</div>
+        <!-- Навигация по разделам -->
+        <div class="section-nav">
+            <span class="section-link active" onclick="switchSection('gallery')">GALLERY</span>
+            <span class="section-link" onclick="switchSection('skins')">SKINS</span>
+            <span class="section-link" onclick="switchSection('maps')">MAPS</span>
         </div>
-        
-        <div class="gallery-grid" id="galleryGrid">
-            <div class="loading">scanning /image ...</div>
+
+        <!-- Галерея (папка /image) -->
+        <div id="gallery-section" class="gallery-section active">
+            <div class="gallery-header">
+                <h2>🎨 Gallery</h2>
+                <div class="image-counter" id="galleryCounter">—</div>
+            </div>
+            <div class="gallery-grid" id="galleryGrid">
+                <div class="loading">scanning /image folder ...</div>
+            </div>
+        </div>
+
+        <!-- Скины (папка /skins) -->
+        <div id="skins-section" class="gallery-section">
+            <div class="gallery-header">
+                <h2>🧵 Skins</h2>
+                <div class="image-counter" id="skinsCounter">—</div>
+            </div>
+            <div class="gallery-grid" id="skinsGrid">
+                <div class="loading">scanning /skins folder ...</div>
+            </div>
+        </div>
+
+        <!-- Карты (папка /maps) -->
+        <div id="maps-section" class="gallery-section">
+            <div class="gallery-header">
+                <h2>🗺️ Maps</h2>
+                <div class="image-counter" id="mapsCounter">—</div>
+            </div>
+            <div class="gallery-grid" id="mapsGrid">
+                <div class="loading">scanning /maps folder ...</div>
+            </div>
         </div>
     </div>
 
@@ -415,81 +501,107 @@
     </div>
 
     <script>
-        // Сканирование папки /image
-        async function scanImageFolder() {
+        // Конфигурация папок
+        const folders = [
+            { name: 'gallery', path: '/image', element: 'galleryGrid', counter: 'galleryCounter' },
+            { name: 'skins', path: '/skins', element: 'skinsGrid', counter: 'skinsCounter' },
+            { name: 'maps', path: '/maps', element: 'mapsGrid', counter: 'mapsCounter' }
+        ];
+
+        // Переключение между разделами
+        function switchSection(section) {
+            // Обновляем активный класс у ссылок
+            document.querySelectorAll('.section-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Показываем нужную секцию
+            document.querySelectorAll('.gallery-section').forEach(sec => {
+                sec.classList.remove('active');
+            });
+            document.getElementById(`${section}-section`).classList.add('active');
+        }
+
+        // Сканирование папки (имитация)
+        async function scanFolder(folderName, folderPath) {
             return new Promise((resolve) => {
                 setTimeout(() => {
-                    // Расширения изображений
-                    const extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'];
-                    
-                    // Проверяем сохраненные изображения
-                    const saved = localStorage.getItem('minimal_portfolio');
+                    // Проверяем сохраненные изображения для этой папки
+                    const saved = localStorage.getItem(`${folderName}_portfolio`);
                     
                     if (saved) {
                         resolve(JSON.parse(saved));
                     } else {
-                        // Генерируем минималистичные тестовые изображения
+                        // Генерируем тестовые изображения
                         const images = [];
+                        const count = folderName === 'gallery' ? 16 : (folderName === 'skins' ? 12 : 8);
                         
-                        // Создаем 16 изображений в серых тонах для минимализма
-                        for (let i = 1; i <= 16; i++) {
-                            // Используем черно-белые изображения для атмосферы
-                            const grayscale = i % 2 === 0 ? 'grayscale' : '';
+                        for (let i = 1; i <= count; i++) {
+                            // Разные ID для разных папок чтобы были разные картинки
+                            let baseId = i;
+                            if (folderName === 'skins') baseId = i + 50;
+                            if (folderName === 'maps') baseId = i + 100;
+                            
                             images.push({
-                                name: `work-${i}.jpg`,
-                                path: `image/work-${i}.jpg`,
-                                // Используем picsum с ID для консистентности
-                                thumbnail: `https://picsum.photos/id/${i + 20}/400/400`,
-                                fullsize: `https://picsum.photos/id/${i + 20}/1200/1200`,
-                                title: `project ${i}`,
+                                name: `${folderName}-${i}.png`,
+                                path: `${folderPath}/${folderName}-${i}.png`,
+                                thumbnail: `https://picsum.photos/id/${baseId + 20}/400/400`,
+                                fullsize: `https://picsum.photos/id/${baseId + 20}/1200/1200`,
+                                title: `${folderName} ${i}`,
                                 id: i
                             });
                         }
                         
-                        localStorage.setItem('minimal_portfolio', JSON.stringify(images));
+                        localStorage.setItem(`${folderName}_portfolio`, JSON.stringify(images));
                         resolve(images);
                     }
-                }, 1000);
+                }, folderName === 'gallery' ? 1000 : 800); // Разная задержка для реализма
             });
         }
 
-        // Загрузка галереи
-        async function loadGallery() {
-            const grid = document.getElementById('galleryGrid');
-            const counter = document.getElementById('imageCounter');
+        // Загрузка галереи для конкретной папки
+        async function loadFolderGallery(folderName, folderPath, gridId, counterId) {
+            const grid = document.getElementById(gridId);
+            const counter = document.getElementById(counterId);
             
             try {
-                const images = await scanImageFolder();
+                const images = await scanFolder(folderName, folderPath);
                 
-                counter.textContent = `${images.length} работ`;
+                counter.textContent = `${images.length} items`;
                 
                 if (images.length === 0) {
-                    grid.innerHTML = '<div class="no-images">folder /image is empty</div>';
+                    grid.innerHTML = '<div class="no-images">folder is empty</div>';
                     return;
                 }
                 
                 grid.innerHTML = '';
                 
-                images.forEach((img, index) => {
+                images.forEach((img) => {
                     const item = document.createElement('div');
                     item.className = 'gallery-item';
                     item.onclick = () => openModal(img.fullsize, img.title);
                     
-                    const title = img.name || `работа ${index + 1}`;
-                    
                     item.innerHTML = `
-                        <img src="${img.thumbnail}" alt="${title}" loading="lazy">
-                        <div class="image-title">${title}</div>
+                        <img src="${img.thumbnail}" alt="${img.title}" loading="lazy">
+                        <div class="image-title">${img.title}</div>
                     `;
                     
                     grid.appendChild(item);
                 });
                 
             } catch (error) {
-                console.error('Error:', error);
-                grid.innerHTML = '<div class="no-images">ошибка загрузки</div>';
+                console.error(`Error loading ${folderName}:`, error);
+                grid.innerHTML = '<div class="no-images">loading error</div>';
                 counter.textContent = '—';
             }
+        }
+
+        // Загрузка всех галерей
+        function loadAllGalleries() {
+            folders.forEach(folder => {
+                loadFolderGallery(folder.name, folder.path, folder.element, folder.counter);
+            });
         }
 
         // Модальное окно
@@ -499,7 +611,7 @@
             const caption = document.getElementById('modalCaption');
             
             img.src = src;
-            caption.textContent = title || 'без названия';
+            caption.textContent = title || 'untitled';
             modal.classList.add('active');
             
             document.addEventListener('keydown', (e) => {
@@ -517,8 +629,8 @@
             if (e.target === this) closeModal();
         });
 
-        // Запуск
-        document.addEventListener('DOMContentLoaded', loadGallery);
+        // Запуск при загрузке
+        document.addEventListener('DOMContentLoaded', loadAllGalleries);
     </script>
 </body>
 </html>
