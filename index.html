@@ -507,7 +507,7 @@
             { name: 'skins', path: '/skins', element: 'skinsGrid', counter: 'skinsCounter' },
             { name: 'maps', path: '/maps', element: 'mapsGrid', counter: 'mapsCounter' }
         ];
-
+    
         // Переключение между разделами
         function switchSection(section) {
             // Обновляем активный класс у ссылок
@@ -522,88 +522,140 @@
             });
             document.getElementById(`${section}-section`).classList.add('active');
         }
-
-        // Сканирование папки (имитация)
-        async function scanFolder(folderName, folderPath) {
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    // Проверяем сохраненные изображения для этой папки
-                    const saved = localStorage.getItem(`${folderName}_portfolio`);
-                    
-                    if (saved) {
-                        resolve(JSON.parse(saved));
-                    } else {
-                        // Генерируем тестовые изображения
-                        const images = [];
-                        const count = folderName === 'gallery' ? 16 : (folderName === 'skins' ? 12 : 8);
-                        
-                        for (let i = 1; i <= count; i++) {
-                            // Разные ID для разных папок чтобы были разные картинки
-                            let baseId = i;
-                            if (folderName === 'skins') baseId = i + 50;
-                            if (folderName === 'maps') baseId = i + 100;
-                            
-                            images.push({
-                                name: `${folderName}-${i}.png`,
-                                path: `${folderPath}/${folderName}-${i}.png`,
-                                thumbnail: `https://picsum.photos/id/${baseId + 20}/400/400`,
-                                fullsize: `https://picsum.photos/id/${baseId + 20}/1200/1200`,
-                                title: `${folderName} ${i}`,
-                                id: i
-                            });
-                        }
-                        
-                        localStorage.setItem(`${folderName}_portfolio`, JSON.stringify(images));
-                        resolve(images);
-                    }
-                }, folderName === 'gallery' ? 1000 : 800); // Разная задержка для реализма
-            });
-        }
-
-        // Загрузка галереи для конкретной папки
-        async function loadFolderGallery(folderName, folderPath, gridId, counterId) {
-            const grid = document.getElementById(gridId);
-            const counter = document.getElementById(counterId);
-            
+    
+        // Функция загрузки изображений из JSON
+        async function loadImagesFromJSON(folderPath, gridElement, counterElement) {
             try {
-                const images = await scanFolder(folderName, folderPath);
+                // Пытаемся загрузить images.json из папки
+                const jsonUrl = `${folderPath}/images.json`;
+                console.log(`Загружаем JSON: ${jsonUrl}`);
                 
-                counter.textContent = `${images.length} items`;
+                const response = await fetch(jsonUrl);
                 
-                if (images.length === 0) {
-                    grid.innerHTML = '<div class="no-images">folder is empty</div>';
-                    return;
+                if (!response.ok) {
+                    throw new Error(`Файл images.json не найден в ${folderPath}`);
                 }
                 
-                grid.innerHTML = '';
+                const filenames = await response.json();
                 
-                images.forEach((img) => {
-                    const item = document.createElement('div');
-                    item.className = 'gallery-item';
-                    item.onclick = () => openModal(img.fullsize, img.title);
-                    
-                    item.innerHTML = `
-                        <img src="${img.thumbnail}" alt="${img.title}" loading="lazy">
-                        <div class="image-title">${img.title}</div>
-                    `;
-                    
-                    grid.appendChild(item);
-                });
+                // Проверяем, что это массив
+                if (!Array.isArray(filenames)) {
+                    throw new Error('Неверный формат JSON, ожидался массив');
+                }
+                
+                console.log(`Найдено файлов в ${folderPath}:`, filenames.length);
+                
+                // Создаем массив изображений
+                const images = filenames
+                    .filter(filename => {
+                        // Оставляем только изображения (по расширению)
+                        const ext = filename.split('.').pop().toLowerCase();
+                        return ['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp'].includes(ext);
+                    })
+                    .map((filename, index) => {
+                        // Убираем расширение для названия
+                        const title = filename.replace(/\.[^/.]+$/, "");
+                        
+                        return {
+                            name: filename,
+                            path: `${folderPath}/${filename}`,
+                            thumbnail: `${folderPath}/${filename}`,
+                            fullsize: `${folderPath}/${filename}`,
+                            title: title,
+                            id: index + 1
+                        };
+                    });
+                
+                // Обновляем счетчик
+                if (counterElement) {
+                    counterElement.textContent = images.length ? `${images.length} items` : 'empty';
+                }
+                
+                // Отображаем изображения
+                displayImages(images, gridElement);
                 
             } catch (error) {
-                console.error(`Error loading ${folderName}:`, error);
-                grid.innerHTML = '<div class="no-images">loading error</div>';
-                counter.textContent = '—';
+                console.error('Ошибка загрузки JSON:', error);
+                
+                // Показываем сообщение об ошибке с инструкцией
+                gridElement.innerHTML = `
+                    <div class="no-images">
+                        <div style="font-size: 1.2rem; margin-bottom: 10px;">❌ ${error.message}</div>
+                        <div style="color: #888; margin-bottom: 15px;">Создайте файл <strong>images.json</strong> в папке ${folderPath}</div>
+                        <div style="background: #1a1a1a; padding: 15px; border-radius: 4px; text-align: left;">
+                            <div style="color: #fff; margin-bottom: 8px;">📄 Пример содержимого images.json:</div>
+                            <pre style="color: #aaa; margin: 0; font-size: 0.9rem;">
+    [
+      "image1.png",
+      "image2.png",
+      "image3.jpg",
+      "skin1.png",
+      "map1.png"
+    ]</pre>
+                        </div>
+                    </div>
+                `;
+                
+                if (counterElement) {
+                    counterElement.textContent = '—';
+                }
             }
         }
-
+    
+        // Функция отображения изображений в сетке
+        function displayImages(images, gridElement) {
+            if (images.length === 0) {
+                gridElement.innerHTML = '<div class="no-images">📁 В папке нет изображений</div>';
+                return;
+            }
+            
+            // Очищаем сетку
+            gridElement.innerHTML = '';
+            
+            // Сортируем изображения по имени
+            images.sort((a, b) => a.name.localeCompare(b.name));
+            
+            // Отображаем все изображения
+            images.forEach(img => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.onclick = () => openModal(img.fullsize, img.title);
+                
+                item.innerHTML = `
+                    <img src="${img.fullsize}" alt="${img.title}" loading="lazy">
+                    <div class="image-title">${img.title}</div>
+                `;
+                
+                gridElement.appendChild(item);
+                
+                // Добавляем обработчик ошибок для изображений
+                const imgElement = item.querySelector('img');
+                imgElement.onerror = function() {
+                    this.style.display = 'none';
+                    this.parentElement.innerHTML += `
+                        <div style="padding: 20px; text-align: center; color: #666;">
+                            ❌ Файл не найден<br>
+                            <small>${img.name}</small>
+                        </div>
+                    `;
+                };
+            });
+        }
+    
         // Загрузка всех галерей
         function loadAllGalleries() {
             folders.forEach(folder => {
-                loadFolderGallery(folder.name, folder.path, folder.element, folder.counter);
+                const grid = document.getElementById(folder.element);
+                const counter = document.getElementById(folder.counter);
+                
+                // Показываем загрузку
+                grid.innerHTML = `<div class="loading">🔍 Загружаем список из ${folder.path}/images.json ...</div>`;
+                
+                // Загружаем изображения через JSON
+                loadImagesFromJSON(folder.path, grid, counter);
             });
         }
-
+    
         // Модальное окно
         function openModal(src, title) {
             const modal = document.getElementById('imageModal');
@@ -614,22 +666,23 @@
             caption.textContent = title || 'untitled';
             modal.classList.add('active');
             
-            document.addEventListener('keydown', (e) => {
+            // Добавляем обработчик клавиши Escape
+            document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') closeModal();
             });
         }
-
+    
         function closeModal() {
             const modal = document.getElementById('imageModal');
             modal.classList.remove('active');
         }
-
+    
         // Закрытие по клику на фон
         document.getElementById('imageModal').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
         });
-
-        // Запуск при загрузке
+    
+        // Запуск при загрузке страницы
         document.addEventListener('DOMContentLoaded', loadAllGalleries);
     </script>
 </body>
